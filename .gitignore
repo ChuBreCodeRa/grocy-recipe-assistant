@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# FastAPI / general backend
+instance/
+*.sqlite3
+*.db
+
+# Docker
+*.pid
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# VSCode and IDEs
+.vscode/
+.idea/
+*.swp
+
+# Obsidian docs cache
+.obsidian/
+
+# OS Files
+.DS_Store
+Thumbs.db
