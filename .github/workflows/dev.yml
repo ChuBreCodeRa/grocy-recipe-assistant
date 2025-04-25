@@ -41,8 +41,7 @@ jobs:
 
       - name: Lint code with Pylint
         run: |
-          cd backend/app
-          pylint $(git ls-files '*.py')
+          pylint backend/app
 
       - name: Run tests
         run: |
