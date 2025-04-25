@@ -1,0 +1,31 @@
+
+[MASTER]
+ignore=tests
+extension-pkg-whitelist=
+
+[MESSAGES CONTROL]
+disable=
+    C0114, # missing-module-docstring
+    C0115, # missing-class-docstring
+    C0116, # missing-function-docstring
+    R0903, # too-few-public-methods
+    R0801, # duplicate-code (until MVP)
+
+[REPORTS]
+output-format=colorized
+reports=no
+
+[FORMAT]
+max-line-length=100
+
+[TYPECHECK]
+generated-members=requests.*,flask.*,sqlalchemy.*
+
+[DESIGN]
+max-args=6
+max-locals=15
+max-branches=12
+max-statements=50
+
+[VARIABLES]
+dummy-variables-rgx=_.*|unused_.*
