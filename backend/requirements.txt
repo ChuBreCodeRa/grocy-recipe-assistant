@@ -1,5 +1,8 @@
-
 fastapi
 uvicorn
 httpx
 pydantic
+psycopg2-binary
+redis
+openai>=1.23.0
+pytest

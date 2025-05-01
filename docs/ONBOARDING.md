@@ -1,4 +1,3 @@
-
 # Onboarding Guide
 
 This guide outlines how a new user (such as Alyssa) would interact with the Grocy AI Recipe Assistant for the first time, and what setup or understanding is required.
@@ -14,6 +13,8 @@ This guide outlines how a new user (such as Alyssa) would interact with the Groc
 - OpenAI API key is stored in `.env`.
 - Home Assistant is configured to send a webhook to the backend.
 - User profiles (`alyssa`, `brendan`) are added manually to the system.
+- Redis is now required for caching AI and API responses. It is included in Docker Compose and requires no manual setup for local development.
+- Ensure your `.env` file includes any custom Redis settings if you are not using the default Docker Compose setup.
 
 ---
 

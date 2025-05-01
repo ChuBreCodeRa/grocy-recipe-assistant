@@ -1,4 +1,3 @@
-
 # Background Jobs - Cron Setup
 
 This document describes scheduled background processes that keep user profiles up-to-date and ensure the Grocy AI Recipe Assistant continuously adapts to user feedback.
@@ -56,14 +55,13 @@ Purge expired entries from the `cached_ai_responses` table to conserve Redis mem
 
 Recommended:  
 - Use `cron` + `docker exec` if Dockerized backend.
-- Future option: Move to Celery periodic tasks or APScheduler for more granular control.
-
-Example Crontab (host level):
+- Example crontab (host level):
 
 ```
-0 3 * * * docker exec recipe_assistant_backend python manage_cron.py update_preferences
-0 4 * * 0 docker exec recipe_assistant_backend python manage_cron.py purge_cache
+0 3 * * * docker compose exec backend python backend/manage_cron.py update_preferences
 ```
+
+- Ensure Redis and PostgreSQL are running for the job to succeed.
 
 ---
 

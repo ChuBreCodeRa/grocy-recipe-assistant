@@ -1,4 +1,3 @@
-
 # Grocy AI Recipe Assistant
 
 ## Overview
@@ -22,9 +21,14 @@ Users interact naturally—primarily through voice ("Hey Google, what should I m
 - **AI-Powered Classification**: GPT-4.1-Nano classifies ingredient importance, effort level, and flavor profile.
 - **Custom Scoring Engine**: Recipes ranked by flavor match, effort match, ingredient availability, and user preference.
 - **Natural Feedback Loop**: Users provide star ratings + freeform mini-reviews; AI extracts effort, flavor, and sentiment tags.
-- **User Profiles**: Per-user preferences for flavor, effort, and ingredient likes/dislikes are continuously updated.
+- **User Profiles**: Per-user preferences for flavor, effort, ingredient likes/dislikes, and dietary restrictions are continuously updated.
+- **Dietary Restrictions Support**: Filter recipes by diet type (vegetarian, vegan, etc.) and food intolerances.
 - **Daily Preference Updates**: Cron job refreshes user profiles based on recent reviews.
 - **Voice Assistant Integration**: Trigger suggestions via Home Assistant.
+- **User Management**: Create and manage user profiles with customizable preferences.
+- **Manual Inventory Sync**: Trigger a sync from Grocy with `POST /inventory/sync`.
+- **Inventory API**: Fetch current inventory from the local database with `GET /inventory`.
+- **Redis Caching**: Caches AI and API responses for performance and cost efficiency. Redis is now required and runs as a service in Docker Compose.
 
 ## Tech Stack
 
@@ -49,11 +53,38 @@ Users interact naturally—primarily through voice ("Hey Google, what should I m
 
 5. Access backend API at `http://localhost:8000`.
 
+## User Management
+
+The system supports multiple users with individual preferences:
+
+1. Create a new user: `POST /users/create` with a unique user_id
+2. Update preferences: `POST /users/{user_id}/preferences`
+3. Get preferences: `GET /users/{user_id}/preferences`
+4. List all users: `GET /users`
+
+## Dietary Restrictions
+
+Users can specify dietary preferences that filter recipe suggestions:
+
+- **Diet Types**: vegetarian, vegan, pescetarian, gluten-free, ketogenic, paleo
+- **Intolerances**: dairy, egg, gluten, grain, peanut, seafood, sesame, shellfish, soy, sulfite, tree nut, wheat
+
+Example preference update:
+```json
+{
+  "dietary_restrictions": {
+    "diet": "vegetarian",
+    "intolerances": ["shellfish", "dairy"]
+  }
+}
+```
+
 ## Project Status
 
 - Core architectural design complete.
 - Documentation scaffolded and filled.
 - Prompting and feedback pipeline defined.
+- User management and dietary restrictions implemented.
 - Development phase initiated.
 
 ## Related Documents
@@ -61,3 +92,10 @@ Users interact naturally—primarily through voice ("Hey Google, what should I m
 - [[SYSTEM_OVERVIEW]]
 - [[DECISIONS]]
 - [[USER_REQUIREMENTS]]
+- [[API_REFERENCE]]
+
+### Environment Variables
+
+- `REDIS_HOST` (default: `redis`)
+- `REDIS_PORT` (default: `6379`)
+- `REDIS_DB` (default: `0`)
