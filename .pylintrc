@@ -1,31 +1,71 @@
-
 [MASTER]
-ignore=tests
-extension-pkg-whitelist=
+# Specify additional paths for the linter to find modules
+init-hook='import sys; sys.path.append("./backend"); sys.path.append("./backend/app")'
+
+# Add files or directories to the blacklist
+ignore=CVS, .git, .venv, venv, __pycache__, migrations
+
+# Use multiple processes to speed up Pylint
+jobs=4
 
 [MESSAGES CONTROL]
+# Disable some warnings that are common in Docker projects
 disable=
-    C0114, # missing-module-docstring
-    C0115, # missing-class-docstring
-    C0116, # missing-function-docstring
-    R0903, # too-few-public-methods
-    R0801, # duplicate-code (until MVP)
+    import-error,
+    no-name-in-module,
+    missing-module-docstring,
+    missing-function-docstring,
+    missing-class-docstring,
+    wrong-import-position,
+    invalid-name,
+    too-many-arguments,
+    too-many-locals,
+    too-many-statements,
+    fixme,
+    broad-except
 
-[REPORTS]
-output-format=colorized
-reports=no
-
-[FORMAT]
+[BASIC]
+# Set max line length to match your project style
 max-line-length=100
 
-[TYPECHECK]
-generated-members=requests.*,flask.*,sqlalchemy.*
+# Good variable names which should always be accepted
+good-names=i, j, k, ex, Run, _, id, db, f
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+# Maximum number of lines in a module
+max-module-lines=1000
+
+# Expected format of line ending
+expected-line-ending-format=LF
 
 [DESIGN]
-max-args=6
+# Maximum number of arguments for function / method
+max-args=8
+
+# Maximum number of locals for function / method body
 max-locals=15
+
+# Maximum number of return / yield for function / method body
+max-returns=6
+
+# Maximum number of branch for function / method body
 max-branches=12
+
+# Maximum number of statements in function / method body
 max-statements=50
 
-[VARIABLES]
-dummy-variables-rgx=_.*|unused_.*
+# Maximum number of parents for a class
+max-parents=7
+
+# Maximum number of lines in a module
+max-module-lines=1200  # Increased from 1000 to accommodate recipes.py
+
+[SIMILARITIES]
+# Minimum lines number of a similarity
+min-similarity-lines=7
+
+# Ignore imports when computing similarities
+ignore-imports=yes

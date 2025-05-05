@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 TASTE_DIMENSIONS = ["sweetness", "saltiness", "sourness", "bitterness", "savoriness", "fattiness"]
 
+
 def update_preferences():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -21,11 +22,14 @@ def update_preferences():
             logger.info(f"Updating preferences for user: {user_id}")
             # Get ratings from last 24h (or longer for initial seeding?)
             # Consider weighting recent ratings more?
-            cur.execute(f"""
+            cur.execute(
+                f"""
                 SELECT effort_tag, {', '.join(TASTE_DIMENSIONS)}
                 FROM user_ratings
                 WHERE user_id = %s AND timestamp > %s AND sentiment = 'positive' -- Only learn from positive experiences?
-            """, (user_id, datetime.now() - timedelta(days=1)))
+            """,
+                (user_id, datetime.now() - timedelta(days=1)),
+            )
             rows = cur.fetchall()
             logger.info(f"Found {len(rows)} recent positive ratings for user {user_id}")
 
@@ -42,10 +46,10 @@ def update_preferences():
                 effort_tag = row_data[0]
                 if effort_tag in effort_counts:
                     effort_counts[effort_tag] += 1
-                
+
                 for i, dim in enumerate(TASTE_DIMENSIONS):
-                    score = row_data[i+1]
-                    if score is not None: # Only count non-null scores
+                    score = row_data[i + 1]
+                    if score is not None:  # Only count non-null scores
                         taste_sums[dim] += score
                         taste_counts[dim] += 1
 
@@ -55,21 +59,30 @@ def update_preferences():
                 if taste_counts[dim] > 0:
                     avg_taste_profile[dim] = round(taste_sums[dim] / taste_counts[dim])
                 else:
-                    avg_taste_profile[dim] = 50 # Default to neutral if no data
-            
+                    avg_taste_profile[dim] = 50  # Default to neutral if no data
+
             # Determine preferred effort
-            effort_pref = max(effort_counts, key=effort_counts.get) if any(effort_counts.values()) else "moderate"
+            effort_pref = (
+                max(effort_counts, key=effort_counts.get)
+                if any(effort_counts.values())
+                else "moderate"
+            )
 
             # Upsert into user_preferences
-            cur.execute("""
+            cur.execute(
+                """
                 INSERT INTO user_preferences (user_id, taste_profile, effort_tolerance, last_updated)
                 VALUES (%s, %s, %s, %s)
                 ON CONFLICT (user_id) DO UPDATE SET
                     taste_profile = EXCLUDED.taste_profile,
                     effort_tolerance = EXCLUDED.effort_tolerance,
                     last_updated = EXCLUDED.last_updated
-            """, (user_id, json.dumps(avg_taste_profile), effort_pref, datetime.now()))
-            logger.info(f"Updated preferences for {user_id}: Effort={effort_pref}, Taste={avg_taste_profile}")
+            """,
+                (user_id, json.dumps(avg_taste_profile), effort_pref, datetime.now()),
+            )
+            logger.info(
+                f"Updated preferences for {user_id}: Effort={effort_pref}, Taste={avg_taste_profile}"
+            )
 
         conn.commit()
     except Exception as e:
@@ -78,6 +91,7 @@ def update_preferences():
     finally:
         cur.close()
         conn.close()
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "update_preferences":

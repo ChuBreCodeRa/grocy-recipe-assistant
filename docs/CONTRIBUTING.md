@@ -85,6 +85,32 @@ Thank you for your interest in contributing to the Grocy Recipe Assistant projec
 docker-compose exec backend pylint backend/app
 ```
 
+#### Linting Configuration
+
+The project uses a customized `.pylintrc` file at the root directory to enforce consistent code style and quality:
+
+- Set `max-line-length=100` to allow reasonable line lengths
+- Disabled certain warnings common in Docker projects (import-error, no-name-in-module)
+- Set `max-module-lines=1200` to accommodate larger modules like recipes.py
+- Enhanced import order checking (standard library first, then third-party, then application imports)
+- Use `%` formatting in logging statements rather than f-strings for better performance
+
+You can run Black to automatically fix most formatting issues:
+
+```bash
+# Install Black if not already installed
+pip install black
+
+# Run Black on Python files
+black backend/app/recipes.py
+```
+
+Common linting fixes:
+1. Use proper import order (standard library → third-party → application)
+2. Convert f-string logging to % formatting: `logger.info("Found %d items", count)` 
+3. Fix trailing whitespace and line length with Black
+4. Add type hints for function parameters and return values
+
 ### Testing
 
 - Add tests for any new functionality

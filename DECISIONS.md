@@ -1,4 +1,3 @@
-
 # Architecture Decision Records [[SYSTEM_OVERVIEW]]
 
 This document logs the key technical and strategic choices made during the design and early implementation of the Grocy AI Recipe Assistant.
@@ -17,7 +16,7 @@ This document logs the key technical and strategic choices made during the desig
 
 **Decision**: Use Spoonacular's ComplexSearch and Meal Planner APIs for recipe discovery and storage.
 
-**Reason**: Spoonacular provides mature ingredient matching, taste profiling, and persistent recipe management, while Grocy’s recipe system was deemed too inflexible.
+**Reason**: Spoonacular provides mature ingredient matching, taste profiling, and persistent recipe management, while Grocy's recipe system was deemed too inflexible.
 
 **Tradeoff**: Reliance on an external service for recipes. Must respect rate limits and API availability.
 
@@ -60,6 +59,26 @@ This document logs the key technical and strategic choices made during the desig
 **Decision**: Maintain local user profile (liked ingredients, flavor profile, effort tolerance) separate from Spoonacular meal planner.
 
 **Reason**: Full portability, control, and transparent AI-driven learning.
+
+---
+
+## 8. Ingredient Naming Strategy
+
+**Decision**: Preserve original ingredient names from Grocy throughout the system.
+
+**Reason**: Maintain specificity for prepared foods, meal kits, and branded items that might be lost through generalization.
+
+**Tradeoff**: Requires more sophisticated matching logic but preserves user's intended ingredients.
+
+---
+
+## 9. Recipe Fallback Strategy
+
+**Decision**: Generate AI-created recipes when Spoonacular doesn't return good matches.
+
+**Reason**: Ensure users always receive relevant recipe suggestions, even with specialized or uncommon inventory items.
+
+**Tradeoff**: Increases AI usage but significantly improves user experience with atypical ingredients.
 
 ---
 

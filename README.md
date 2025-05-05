@@ -29,6 +29,9 @@ Users interact naturally—primarily through voice ("Hey Google, what should I m
 - **Manual Inventory Sync**: Trigger a sync from Grocy with `POST /inventory/sync`.
 - **Inventory API**: Fetch current inventory from the local database with `GET /inventory`.
 - **Redis Caching**: Caches AI and API responses for performance and cost efficiency. Redis is now required and runs as a service in Docker Compose.
+- **AI Recipe Generation**: Creates custom recipes directly from your ingredients when Spoonacular doesn't have good matches.
+- **Original Ingredient Preservation**: Preserves your exact ingredient names for better matching of meal kits and prepared foods.
+- **Culinary-Aware Ingredient Grouping**: Groups ingredients based on real culinary principles for better recipe matches.
 
 ## Tech Stack
 
@@ -86,6 +89,7 @@ Example preference update:
 - Prompting and feedback pipeline defined.
 - User management and dietary restrictions implemented.
 - Development phase initiated.
+- Enhanced ingredient matching and AI recipe generation implemented.
 
 ## Related Documents
 
